@@ -7,6 +7,9 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(TOSTER)
+library(dplyr)
+library(tidyr)
 ```
 
 # Theoretical hypothesis 
@@ -21,7 +24,42 @@ I will use an alpha of 0.05. I will perform a two-sided test. I will not be perf
 # Statistical test specification
 I will calculate a 90% CI around the effect size. If the 90% CI falls below and excludes a Cohen's d of 0.8, recent movies from the two companies will be considered equally good. 
 
+# One observation was excluded
+```{r load data, echo = FALSE}
+data <- read.csv('../../originalDataAndMetaData/originalData/IYSIAssignment7DataRaw.csv', header = T)
+```
+One movie was found to have no ratings on IMDB (Thomas and The 2 Brothers). This observation was removed from the analysis, leaving 20th Century Fox with 33 instead of 34 observations.
 
+# Statistical test suggests that recent Dreamworks and 20th Century Fox movies are equally good
+```{r summary stats, echo = FALSE}
+#Remove NAs
+data <- data %>% drop_na()
+
+#Calculate means and standard deviations
+m1 <- mean(data$rating[which(data$company=="DreamWorks")])
+m2 <- mean(data$rating[which(data$company=="20th Century Fox")])
+sd1 <- sd(data$rating[which(data$company=="DreamWorks")])
+sd2 <- sd(data$rating[which(data$company=="20th Century Fox")])
+n1 <- length(data$rating[which(data$company=="DreamWorks")])
+n2 <- length(data$rating[which(data$company=="20th Century Fox")])
+```
+
+For each company, the mean and standard deviation were computed (Dreamworks: mean = `r round(m1,2)`, sd = `r round(sd1,2)`; 20th Century Fox: mean = `r round(m2,2)`, sd = `r round(sd2,2)`). These were used to perform an equivalence test (\autoref{fig:TOSTtwo}). The null hypothesis of a mean difference equal or greater than a Cohen's d of 0.8 (equivalent to a raw difference of 0.6888) was rejected at the 5% level (mean difference = 0.248, 90% CI: [-0.103, 0.599], $t_{60.05}=-2.1$, $p=0.020$).  
+It was not planned in the pre-registration to perform a null hypothesis significance test. However, since this is given in the `TOSTtwo` output and it can be informative, it is interpreted here as an exploratory analysis. The null hypothesis significance test was not significant (mean difference = 0.248, 95% CI: [-0.172, 0.668], $t_{60.05}=1.181$, $p=0.242$). This suggests that the observed effect is not statistically significant from 0.
+
+This suggests that recent Dreamworks and 20th Century Fox movies are equally good. The NHST result in \autoref{fig:TOSTtwo} suggests 
+
+
+
+
+```{r perform test, echo = FALSE, message = FALSE, results = FALSE, fig.keep = 'all', fig.cap="\\label{fig:TOSTtwo} The null hypothesis that the Cohen's d effect size is 0.8 is rejected."}
+#perform equivalence test
+TOSTtwo(m1 = m1, m2 = m2, sd1 = sd1, sd2 = sd2, n1 = n1, n2 = n2, low_eqbound_d = -0.8, high_eqbound_d = 0.8)
+```
+
+
+# Conclusion
+Overall, this analysis suggests that the observed difference in ratings between recent Dreamworks and 20th Century Movies is not statistically significant from 0 and statistically equivalent to 0, with an equivalence bound of Cohen's d of 0.8. Thus, it is concluded that recent Dreamworks and 20th Century Movies are likely to be equally good.
 
 
 

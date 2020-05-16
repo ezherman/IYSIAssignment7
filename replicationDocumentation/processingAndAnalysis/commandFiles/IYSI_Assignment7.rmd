@@ -1,5 +1,5 @@
 ---
-title: "INSERT TITLE"
+title: "A comparison of the IMDB ratings of recent Dreamworks and 20th Century Fox movies"
 author: "Ezra Herman"
 date: "16/05/2020"
 output: pdf_document
@@ -16,13 +16,7 @@ library(tidyr)
 Recent movies by Dreamworks are as good as recent movies by 20th Century Fox.
 
 # Dependent variable
-IMDB score. Via the advanced title search, search for feature films with a release date to set to max 2019. Search once for Dreamworks and once for 20th Century Fox. For each, sort the titles starting with the most recent release date.
-
-# Sample size justification
-I will use an alpha of 0.05. I will perform a two-sided test. I will not be performing a sequential analysis. I am aiming for 90% power. I aim to exclude an effect of a Cohen's $d$ of 0.8, assuming the true effect is 0. Using the `powerTOSTtwo` function from the `TOSTER` R package, I find that I need a sample size of 34 in each group. 
-
-# Statistical test specification
-I will calculate a 90% CI around the effect size. If the 90% CI falls below and excludes a Cohen's d of 0.8, recent movies from the two companies will be considered equally good. 
+The dependent variable is the IMDB score. Via the advanced title search, I searched for feature films with a release date to set to max 2019. I searched once for Dreamworks and once for 20th Century Fox. For each, the titles were sorted starting with the most recent release date.
 
 # One observation was excluded
 ```{r load data, echo = FALSE}
@@ -45,21 +39,19 @@ n2 <- length(data$rating[which(data$company=="20th Century Fox")])
 ```
 
 For each company, the mean and standard deviation were computed (Dreamworks: mean = `r round(m1,2)`, sd = `r round(sd1,2)`; 20th Century Fox: mean = `r round(m2,2)`, sd = `r round(sd2,2)`). These were used to perform an equivalence test (\autoref{fig:TOSTtwo}). The null hypothesis of a mean difference equal or greater than a Cohen's d of 0.8 (equivalent to a raw difference of 0.6888) was rejected at the 5% level (mean difference = 0.248, 90% CI: [-0.103, 0.599], $t_{60.05}=-2.1$, $p=0.020$).  
-It was not planned in the pre-registration to perform a null hypothesis significance test. However, since this is given in the `TOSTtwo` output and it can be informative, it is interpreted here as an exploratory analysis. The null hypothesis significance test was not significant (mean difference = 0.248, 95% CI: [-0.172, 0.668], $t_{60.05}=1.181$, $p=0.242$). This suggests that the observed effect is not statistically significant from 0.
-
-This suggests that recent Dreamworks and 20th Century Fox movies are equally good. The NHST result in \autoref{fig:TOSTtwo} suggests 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It was not planned in the pre-registration to perform a null hypothesis significance test. Even though this is included in \autoref{fig:TOSTtwo}, it is not interpreted here.
 
 
 
 
-```{r perform test, echo = FALSE, message = FALSE, results = FALSE, fig.keep = 'all', fig.cap="\\label{fig:TOSTtwo} The null hypothesis that the Cohen's d effect size is 0.8 is rejected."}
+```{r perform test, echo = FALSE, message = FALSE, results = FALSE, fig.keep = 'all', fig.cap="\\label{fig:TOSTtwo} The null hypothesis that the Cohen's d effect size is equal to or larger than 0.8 is rejected."}
 #perform equivalence test
 TOSTtwo(m1 = m1, m2 = m2, sd1 = sd1, sd2 = sd2, n1 = n1, n2 = n2, low_eqbound_d = -0.8, high_eqbound_d = 0.8)
 ```
 
 
 # Conclusion
-Overall, this analysis suggests that the observed difference in ratings between recent Dreamworks and 20th Century Movies is not statistically significant from 0 and statistically equivalent to 0, with an equivalence bound of Cohen's d of 0.8. Thus, it is concluded that recent Dreamworks and 20th Century Movies are likely to be equally good.
+Overall, this analysis suggests that the observed difference in ratings between recent Dreamworks and 20th Century Movies is statistically equivalent to 0, with an equivalence bound of Cohen's d of 0.8. Thus, it is concluded that recent Dreamworks and 20th Century Movies are likely not to largely differ in their average IMDB ratings, which supports the hypothesis that their recent movies are equally good.
 
 
 

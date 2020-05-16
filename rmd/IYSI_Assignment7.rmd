@@ -1,0 +1,29 @@
+---
+title: "INSERT TITLE"
+author: "Ezra Herman"
+date: "16/05/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Theoretical hypothesis 
+Recent movies by Dreamworks are as good as recent movies by 20th Century Fox.
+
+# Dependent variable
+IMDB score. Via the advanced title search, search for feature films with a release date to set to max 2019. Search once for Dreamworks and once for 20th Century Fox. For each, sort the titles starting with the most recent release date.
+
+# Sample size justification
+I will use an alpha of 0.05. I will perform a two-sided test. I will not be performing a sequential analysis. I am aiming for 90% power. I aim to exclude an effect of a Cohen's $d$ of 0.8, assuming the true effect is 0. Using the `powerTOSTtwo` function from the `TOSTER` R package, I find that I need a sample size of 34 in each group. 
+
+# Statistical test specification
+I will calculate a 90% CI around the effect size. If the 90% CI falls below and excludes a Cohen's d of 0.8, recent movies from the two companies will be considered equally good. 
+
+
+
+
+
+
+
